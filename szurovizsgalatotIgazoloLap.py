@@ -4,12 +4,12 @@ import xlrd
 
 def pdf_template():
 
-    lastIndex = 548
-    file = 'nevsor2.xlsx'
+    lastIndex = 538
+    file = 'Nevsor_2023_04_25.xlsx'
     workbook = xlrd.open_workbook(file)
     sheet = workbook.sheet_by_index(0)
 
-    osztaly = sheet.cell_value(1, 1)
+    osztaly = sheet.cell_value(1, 0)
 
     parts = []
     felso_allando = """<html>
@@ -38,7 +38,7 @@ def pdf_template():
 
     for i in range(1, lastIndex):
 
-        nev = sheet.cell_value(i, 2) + ' ' + sheet.cell_value(i, 3)
+        nev = sheet.cell_value(i, 1) + ' ' + sheet.cell_value(i, 2)
 
         s = """
 <div class="oldalTores" style="border-right: thin">
@@ -64,12 +64,12 @@ def pdf_template():
 
         parts.append(s)
 
-        if i == lastIndex-1 or osztaly != sheet.cell_value(i+1, 1):
+        if i == lastIndex-1 or osztaly != sheet.cell_value(i+1, 0):
             parts.append(also_allando)
             kesz = "".join(parts)
             print(kesz, osztaly.replace(". ", "") + ".pdf")
             if i != lastIndex-1:
-                osztaly = sheet.cell_value(i+1, 1)
+                osztaly = sheet.cell_value(i+1, 0)
                 parts = []
                 parts.append(felso_allando)
 
@@ -85,7 +85,7 @@ def print(kesz, pdf_name):
         'orientation': 'landscape'
     }
 
-    pdfkit.from_string(kesz, pdf_name, options=option)
+    pdfkit.from_string(kesz, 'szuresvizsgalatotigazololap/' + pdf_name, options=option)
 
 if __name__ == '__main__':
     pdf_template()
