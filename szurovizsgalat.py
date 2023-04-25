@@ -2,10 +2,10 @@ from time import gmtime, strftime
 import pdfkit
 import xlrd
 
+LAST_INDEX = 538
 
 def pdf_template():
-    lastIndex = 549
-    file = 'Nevsor_2019_10_06.xlsx'
+    file = 'Nevsor_2023_04_25.xlsx'
     workbook = xlrd.open_workbook(file)
     sheet = workbook.sheet_by_index(0)
 
@@ -50,9 +50,7 @@ def pdf_template():
 
     parts.append(felso_allando)
 
-    for i in range(1, lastIndex):
-        # for i in range(1, 2):
-
+    for i in range(1, LAST_INDEX):
         nev = sheet.cell_value(i, 1) + ' ' + sheet.cell_value(i, 2)
         anev = sheet.cell_value(i, 3) + ' ' + sheet.cell_value(i, 4)
         lakhely = sheet.cell_value(i, 8) + ' ' + sheet.cell_value(i, 9) + ' ' + sheet.cell_value(i, 10) + ' ' + sheet.cell_value(i, 11) + ' ' + sheet.cell_value(i, 12)
@@ -140,11 +138,11 @@ def pdf_template():
         parts.append(s)
 
         # if (osztaly != sheet.cell_value(i+1, 1) or osztaly == "1. a"):
-        if i == lastIndex - 1 or osztaly != sheet.cell_value(i + 1, 0):
+        if i == LAST_INDEX - 1 or osztaly != sheet.cell_value(i + 1, 0):
             parts.append(also_allando)
             kesz = "".join(parts)
             print(kesz, osztaly.replace(". ", "") + ".pdf")
-            if i != lastIndex - 1:
+            if i != LAST_INDEX - 1:
                 osztaly = sheet.cell_value(i + 1, 0)
                 parts = []
                 parts.append(felso_allando)
